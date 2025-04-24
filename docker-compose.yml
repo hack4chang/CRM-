@@ -1,0 +1,31 @@
+services:
+  # PHP Application Server
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./crm:/var/www/html
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=crm
+      - DB_USER=root
+      - DB_PASS=root
+
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=crm
+    ports:
+      - "3306:3306"
+
+volumes:
+  mysql_data: 
